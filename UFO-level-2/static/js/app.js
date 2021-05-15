@@ -30,36 +30,44 @@ function runEnter() {
 
   var date_input = d3.select("#datetime");
   var city_input = d3.select("#city");
+  var state_input = d3.select("#state");
+  var country_input = d3.select("#country");
+  var shap_input = d3.select("#shape");
 
   // console.log(input);
 
   var date_inputValue = date_input.property("value");
   var city_inputValue = city_input.property("value");
+  var state_inputValue = state_input.property("value");
+  var country_inputValue = country_input.property("value");
+  var shape_inputValue = shap_input.property("value");
 
-
-  // console.log(inputValue);
-
-  // If the date form is not empty the table will display search result
-  if (date_inputValue !== "" || city_inputValue !== "") {
-
-    // One filter
-    if (date_inputValue !== "" && city_inputValue === "") {
-      var filterData = tableData.filter(x => x.datetime === date_inputValue);
+  // Creating if statement for the filters to work
+  var filteredData=tableData;
+    if (date_inputValue){
+        filteredData = filteredData.filter(x => x.datetime === date_inputValue); 
     }
-    
-    else if (date_inputValue === "" && city_inputValue !== "") {
-      var filterData = tableData.filter(x => x.city === city_inputValue);
+    if (city_inputValue){
+        filteredData = filteredData.filter(x => x.city === city_inputValue);       
+    }
+    if (state_inputValue){
+        filteredData = filteredData.filter(x => x.state === state_inputValue);       
+    }
+    if (country_inputValue){
+        filteredData = filteredData.filter(x => x.country === country_inputValue);       
+    }
+    if (shape_inputValue){
+        filteredData = filteredData.filter(x => x.shape === shape_inputValue);       
     }
   
-    else {
-      var filterData = tableData.filter(x => x.datetime === date_inputValue && x.city === city_inputValue);
-    }
+  // Printing the filtered data
+  console.log(filteredData);
 
-    console.log(filterData);
-
+  if (date_inputValue !== "" || city_inputValue !=="" || state_inputValue !=="" || country_inputValue !=="" || shape_inputValue !=="")
+  {
     tbody.html("");
-  
-    filterData.forEach(function(search) {
+
+    filteredData.forEach((search) => {
       console.log(search);
       var row = tbody.append("tr");
       Object.entries(search).forEach(function([key, value]) {
@@ -68,7 +76,7 @@ function runEnter() {
         cell.text(value);
       });
     });
-}
+  }
 
   // If we delete the date entered in the form - empty, the table will display all tableData
   else {
